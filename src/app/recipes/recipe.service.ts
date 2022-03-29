@@ -13,20 +13,29 @@ export class RecipeService
 
     recipesChanged = new Subject<Recipe[]>();
 
-    private recipes: Recipe[] = [
-    new Recipe("Hamburger",
-    "Very tastefull",
-     "https://www.novosti.rs/upload/images/2019b/01/10n/Depositphotos_15890699_xl-2.jpg",
-     [
-        new Ingredient('Meat',1)
-     ]),
-     new Recipe("Pizz",
-     "Italian masterpiece",
-      "https://upload.wikimedia.org/wikipedia/commons/d/d3/Supreme_pizza.jpg",
-      [
-         new Ingredient('Cheeze',6)
-      ])
-    ]
+    // private recipes: Recipe[] = [
+    // new Recipe("Hamburger",
+    // "Very tastefull",
+    //  "https://www.novosti.rs/upload/images/2019b/01/10n/Depositphotos_15890699_xl-2.jpg",
+    //  [
+    //     new Ingredient('Meat',1)
+    //  ]),
+    //  new Recipe("Pizz",
+    //  "Italian masterpiece",
+    //   "https://upload.wikimedia.org/wikipedia/commons/d/d3/Supreme_pizza.jpg",
+    //   [
+    //      new Ingredient('Cheeze',6)
+    //   ])
+    // ]
+
+    private recipes:Recipe[] = [];
+    
+
+    setRecipes(recipes:Recipe[])
+    {
+        this.recipes = recipes;
+        this.recipesChanged.next(this.recipes.slice());
+    }
 
     constructor(private shoppingService:ShoppingListService) {}
 
