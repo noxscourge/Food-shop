@@ -24,15 +24,9 @@ export class dataStorage
 
         getRecipes()
         {
-            return this.authService.user.pipe(
-                take(1),
-                exhaustMap(user=>{
 
-                return this.https.get<Recipe[]>('https://ng-course-recipe-2a6d9-default-rtdb.europe-west1.firebasedatabase.app/recipes.json', 
-                {
-                params: new HttpParams().set('auth', user.token)
-                })
-            }),map(recipes=>{
+                return this.https.get<Recipe[]>('https://ng-course-recipe-2a6d9-default-rtdb.europe-west1.firebasedatabase.app/recipes.json').
+                pipe(map(recipes=>{
                 return recipes.map(recipe =>
                     {
                     return {...recipe,ingredients: recipe.ingredients ? recipe.ingredients : []

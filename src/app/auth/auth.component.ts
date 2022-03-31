@@ -21,6 +21,12 @@ export class AuthComponent implements OnInit {
   }
 
 
+
+  OnClose()
+  {
+    this.error=null;
+  }
+
   changeStatusOfLogin()
   {
     this.inLoginMode = !this.inLoginMode;
