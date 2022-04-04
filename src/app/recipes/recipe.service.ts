@@ -1,78 +1,54 @@
-import {  Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { Ingredient } from "../shared/ingredient.model";
-import { ShoppingListService } from "../shopping-list/shopping-list.service";
-import { Recipe } from "./recipe.model";
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
 
-
+import { Recipe } from './recipe.model';
+import { Ingredient } from '../shared/ingredient.model';
+//import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer'
 @Injectable()
-export class RecipeService
-{
-    //public recipeSelected = new Subject<Recipe>()
-   // public ingredientsToSend = new Subject<Recipe>();
+export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
 
-    recipesChanged = new Subject<Recipe[]>();
+ 
+  private recipes: Recipe[] = [];
 
-    // private recipes: Recipe[] = [
-    // new Recipe("Hamburger",
-    // "Very tastefull",
-    //  "https://www.novosti.rs/upload/images/2019b/01/10n/Depositphotos_15890699_xl-2.jpg",
-    //  [
-    //     new Ingredient('Meat',1)
-    //  ]),
-    //  new Recipe("Pizz",
-    //  "Italian masterpiece",
-    //   "https://upload.wikimedia.org/wikipedia/commons/d/d3/Supreme_pizza.jpg",
-    //   [
-    //      new Ingredient('Cheeze',6)
-    //   ])
-    // ]
+  constructor(
+    //private slService: ShoppingListService,
+    private store: Store<fromShoppingList.AppState>
+  ) {}
 
-    private recipes:Recipe[] = [];
-    
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
-    setRecipes(recipes:Recipe[])
-    {
-        this.recipes = recipes;
-        this.recipesChanged.next(this.recipes.slice());
-    }
+  getRecipes() {
+    return this.recipes.slice();
+  }
 
-    constructor(private shoppingService:ShoppingListService) {}
+  getRecipe(index: number) {
+    return this.recipes[index];
+  }
 
-    getRecipes()
-    {
-        return this.recipes.slice(); //kopija niza recepata
-    }
+  addIngredientsToShoppingList(ingredients: Ingredient[]) {
+    // this.slService.addIngredients(ingredients);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ingredients));
+  }
 
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
-    getRecipe(id:number)
-    {
-        return this.recipes[id];
-    }
-    addIngredientsToShoppingList(ingredients: Ingredient[])
-    {
-        this.shoppingService.addIngredients(ingredients);
-    }
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
-    addRecipe(recipe:Recipe)
-    {
-        this.recipes.push(recipe);
-        this.recipesChanged.next(this.recipes.slice());
-    }
-
-
-    deleteRecipe(id:number)
-    {
-        this.recipes.splice(id,1)
-        this.recipesChanged.next(this.recipes.slice());
-    }
-    updateRecipe(id:number,newRecipe:Recipe)
-    {
-        this.recipes[id].name = newRecipe.name;
-        this.recipes[id].imagePath = newRecipe.imagePath;
-        this.recipes[id].description = newRecipe.description;
-        this.recipes[id].ingredients = newRecipe.ingredients;
-        this.recipesChanged.next(this.recipes.slice());
-    }
-   
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipesChanged.next(this.recipes.slice());
+  }
 }

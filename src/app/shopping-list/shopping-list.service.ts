@@ -1,53 +1,42 @@
-import { Subject } from 'rxjs';
-import {Ingredient} from '../shared/ingredient.model'
+// import { Ingredient } from '../shared/ingredient.model';
+// import { Subject } from 'rxjs';
 
-export class ShoppingListService
-{
+// export class ShoppingListService {
+//   ingredientsChanged = new Subject<Ingredient[]>();
+//   startedEditing = new Subject<number>();
+//   private ingredients: Ingredient[] = [
+//     new Ingredient('Apples', 5),
+//     new Ingredient('Tomatoes', 10),
+//   ];
 
-    //ingredientChanged = new EventEmitter<Ingredient[]>();
-    ingredientChanged = new Subject<Ingredient[]>();
-    startedEditing = new Subject<number>();
-        ingredients: Ingredient[] = [
-        new Ingredient("Apples",5),
-        new Ingredient("Tomato", 3)
-      ]
+//   getIngredients() {
+//     return this.ingredients.slice();
+//   }
 
+//   getIngredient(index: number) {
+//     return this.ingredients[index];
+//   }
 
-    deleteItem(id:number)
-{
-    this.ingredients.splice(id,1);
-    this.ingredientChanged.next(this.ingredients.slice());
-}
+//   addIngredient(ingredient: Ingredient) {
+//     this.ingredients.push(ingredient);
+//     this.ingredientsChanged.next(this.ingredients.slice());
+//   }
 
-     getIngredients()
-     {
-        return this.ingredients.slice();
-     }
+//   addIngredients(ingredients: Ingredient[]) {
+//     // for (let ingredient of ingredients) {
+//     //   this.addIngredient(ingredient);
+//     // }
+//     this.ingredients.push(...ingredients);
+//     this.ingredientsChanged.next(this.ingredients.slice());
+//   }
 
-    getIngredientById(id:number)
-    {
-        return this.ingredients[id];
-    }
+//   updateIngredient(index: number, newIngredient: Ingredient) {
+//     this.ingredients[index] = newIngredient;
+//     this.ingredientsChanged.next(this.ingredients.slice());
+//   }
 
-    updateIngredient(id:number, name:string, amount:number)
-    {
-        this.ingredients[id].name = name;
-        this.ingredients[id].amount= amount;
-        this.ingredientChanged.next(this.ingredients.slice());
-    }
-     addIngredient(ingredient:Ingredient)
-     {
-         this.ingredients.push(ingredient);
-         this.ingredientChanged.next(this.ingredients);
-     }
-
-     addIngredients(ingredients:Ingredient[])
-     {
-        /* ingredients.map((ingridient)=>{
-            this.addIngredient(ingridient);
-         })*/
-
-         this.ingredients.push(...ingredients);
-         this.ingredientChanged.next(this.ingredients.slice());
-     }
-}
+//   deleteIngredient(index: number) {
+//     this.ingredients.splice(index, 1);
+//     this.ingredientsChanged.next(this.ingredients.slice());
+//   }
+// }
